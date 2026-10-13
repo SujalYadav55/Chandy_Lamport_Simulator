@@ -16,7 +16,7 @@ class Message:
         self.amount = amount
 
     def __repr__(self):
-        return "MARKER" if self.kind == "MARKER" else f"${self.amount}"
+        return "MARKER" if self.kind == "MARKER" else f"₹{self.amount}"
 
 
 class Channel:
@@ -57,7 +57,7 @@ class Simulator:
             return False
         p.balance -= amount
         self.channels[(src, dst)].queue.append(Message("TRANSFER", amount))
-        self.log.append(f"{src} sent ${amount} to {dst}")
+        self.log.append(f"{src} sent ₹{amount} to {dst}")
         return True
 
     def random_transfer(self):
@@ -79,7 +79,7 @@ class Simulator:
             p.recording[other] = (other != skip_channel_from)
             # send marker on every outgoing channel
             self.channels[(pid, other)].queue.append(Message("MARKER"))
-        self.log.append(f"{pid} recorded its balance (${p.recorded_balance}) and sent MARKERs")
+        self.log.append(f"{pid} recorded its balance (₹{p.recorded_balance}) and sent MARKERs")
 
     def start_snapshot(self, pid):
         if self.processes[pid].has_recorded:
@@ -106,7 +106,7 @@ class Simulator:
             p.balance += msg.amount
             if p.has_recorded and p.recording.get(src):
                 p.channel_state[src].append(msg.amount)   # message was in transit
-            self.log.append(f"{dst} received ${msg.amount} from {src}")
+            self.log.append(f"{dst} received ₹{msg.amount} from {src}")
         else:  # MARKER
             if not p.has_recorded:
                 self.log.append(f"{dst} got first MARKER from {src}")
