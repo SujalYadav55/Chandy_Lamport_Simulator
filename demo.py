@@ -1,4 +1,3 @@
-"""Command-line demo: run with  python demo.py"""
 import random
 from chandy_lamport import Simulator
 
