@@ -1,4 +1,3 @@
-"""Web UI: run with  python app.py   then open http://127.0.0.1:5000"""
 from flask import Flask, render_template, request, jsonify
 from chandy_lamport import Simulator
 
