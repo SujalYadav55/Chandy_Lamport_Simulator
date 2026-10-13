@@ -6,7 +6,7 @@
   const svg = $("#stage");
   let state = null, busy = false, timer = null, pos = {}, geometry = {}, idKey = "";
 
-  const money = n => "$" + n;
+  const money = n => "₹" + n;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 
   function toast(msg) {
@@ -68,7 +68,7 @@
     if (m.kind === "MARKER") {
       return `<circle class="flag-disc" r="15"/><path class="flag-pole" d="M-4.5 8V-7"/><path class="flag-cloth" d="M-4.5 -7L7 -3L-4.5 1Z"/>`;
     }
-    return `<circle class="coin-disc" r="17"/><text class="coin-text" y="4.5" text-anchor="middle">$${m.amount}</text>`;
+    return `<circle class="coin-disc" r="17"/><text class="coin-text" y="4.5" text-anchor="middle">₹${m.amount}</text>`;
   }
 
   function renderStage() {
@@ -84,7 +84,7 @@
       c.messages.slice(0, 3).forEach((m, i) => {
         const p = bez(g, [0.76, 0.46, 0.2][i]);
         const front = i === 0;
-        const label = m.kind === "MARKER" ? "marker" : "$" + m.amount;
+        const label = m.kind === "MARKER" ? "marker" : "₹" + m.amount;
         toks += `<g class="token ${m.kind === "MARKER" ? "flag" : "coin"} ${front ? "front" : ""}" transform="translate(${p.x} ${p.y})" data-src="${c.src}" data-dst="${c.dst}"
           ${front ? `tabindex="0" role="button" aria-label="Deliver ${label} from ${c.src} to ${c.dst}"` : ""}>
           ${front ? `<circle class="ring" r="23"/>` : ""}<circle class="hit" r="22"/>${tokenInner(m)}
@@ -209,7 +209,7 @@
   function renderLog() {
     const items = state.log.slice().reverse().map(line => {
       const sep = line.startsWith("---");
-      const text = line.replace(/^-+\s*|\s*-+$/g, "");
+      const text = line.replace(/^-+\s*|\s*-+₹/g, "");
       const cls = sep ? "sep" : (line.includes("MARKER") ? "mk" : "");
       return `<li class="${cls}">${esc(text)}</li>`;
     });
