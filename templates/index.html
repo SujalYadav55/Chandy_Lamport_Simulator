@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chandy–Lamport snapshot simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+<header class="topbar container-xl">
+  <div>
+    <h1>Chandy–Lamport snapshot simulator</h1>
+    <p class="lede">Processes pass money to each other while one of them takes a snapshot.
+      Watch how the snapshot stays consistent even though money is still moving.</p>
+  </div>
+  <div id="status" class="status status-idle" role="status">No snapshot yet</div>
+</header>
+
+<main class="container-xl">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <section class="stage" aria-label="Network of processes">
+        <svg id="stage" viewBox="0 0 720 570" role="img" aria-label="Processes connected by channels"></svg>
+        <div class="stage-foot">
+          <div class="legend">
+            <span><i class="i-coin"></i>Money in a channel</span>
+            <span><i class="i-flag"></i>Marker</span>
+            <span><i class="i-frost"></i>Saved by the snapshot</span>
+          </div>
+          <div class="total" id="total"></div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <button id="next" class="btn btn-ink">Deliver a random message</button>
+        <input type="checkbox" class="btn-check" id="auto" autocomplete="off">
+        <label class="btn btn-outline-ink" for="auto" id="auto-label">Auto-play</label>
+        <span class="ms-auto d-flex align-items-center gap-2">
+          <label for="count" class="small text-secondary">Processes</label>
+          <select id="count" class="form-select form-select-sm w-auto">
+            <option>3</option><option>4</option><option>5</option>
+          </select>
+          <button id="reset" class="btn btn-outline-ink btn-sm">Reset</button>
+        </span>
+      </div>
+    </div>
+
+    <aside class="col-lg-4">
+      <div class="rail">
+        <section>
+          <h2>Send money</h2>
+          <p class="hint">Money leaves the sender at once and arrives only when you deliver it.</p>
+          <form id="send-form" class="row g-2">
+            <div class="col-6"><label class="form-label small" for="src">From</label>
+              <select id="src" class="form-select"></select></div>
+            <div class="col-6"><label class="form-label small" for="dst">To</label>
+              <select id="dst" class="form-select"></select></div>
+            <div class="col-12"><label class="form-label small" for="amount">Amount</label>
+              <div class="input-group"><span class="input-group-text">$</span>
+                <input id="amount" type="number" min="1" value="20" class="form-control"></div></div>
+            <div class="col-12"><button class="btn btn-ink w-100">Send money</button></div>
+          </form>
+        </section>
+
+        <section>
+          <h2>Take a snapshot</h2>
+          <p class="hint">The process you pick saves its balance and sends a marker to everyone else.</p>
+          <form id="snap-form" class="input-group">
+            <select id="initiator" class="form-select" aria-label="Process that starts the snapshot"></select>
+            <button id="snap-btn" class="btn btn-frost">Start snapshot</button>
+          </form>
+        </section>
+
+        <section>
+          <h2>Snapshot result</h2>
+          <div id="snapshot-body"></div>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <section class="log">
+    <h2>What happened</h2>
+    <ol id="events" class="events"></ol>
+  </section>
+</main>
+
+<div id="toasts" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
