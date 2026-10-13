@@ -42,9 +42,9 @@ def transfer():
         return fail("Choose two different processes.")
     balance = sim.processes[src].balance
     if amount <= 0:
-        return fail("The amount must be above $0.")
+        return fail("The amount must be above ₹0.")
     if amount > balance:
-        return fail(f"{src} only has ${balance} to send.")
+        return fail(f"{src} only has ₹{balance} to send.")
     sim.transfer(src, dst, amount)
     return ok()
 
