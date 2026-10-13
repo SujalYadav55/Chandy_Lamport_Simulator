@@ -1,11 +1,3 @@
-"""
-Chandy-Lamport Distributed Snapshot Simulator
----------------------------------------------
-Model: each process holds a bank balance. Processes send money (TRANSFER
-messages) to each other over FIFO channels. A snapshot must capture a
-consistent global state, so total money (balances + money in transit)
-must always equal the starting total.
-"""
 import random
 from collections import deque
 
